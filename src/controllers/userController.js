@@ -7,9 +7,15 @@ exports.signUp = async (req, res) => {
     const { username, email, password } = req.body;
     const newUser = new User({ username, email, password });
     await newUser.save();
-    res.status(201).send('User created successfully');
+    res.status(201).send({
+      status: true,
+      message: 'User created successfully'
+    });
   } catch (err) {
-    res.status(400).send(err.message);
+    res.status(400).send({
+      status: false,
+      message: err.message
+    });
   }
 };
 
@@ -17,14 +23,22 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).send('Invalid email or password');
+    if (!user) 
+      return res.status(400).send({
+        status: false,
+        message: "Invalid Username and password"
+      });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).send('Invalid email or password');
+    if (!isMatch) 
+      return res.status(400).send({
+        status: false,
+        message: "Invalid Username and password"
+      });
 
     const token = jwt.sign({ id: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
-    res.status(200).json({ token });
+    res.status(200).json({ status: true, token });
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).send({ status: false, message: err.message });
   }
 };
