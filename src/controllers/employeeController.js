@@ -1,5 +1,6 @@
 const Employee = require('../models/Employee');
 
+// get specified employee from route get /api/v1/emp/employees/:eid
 exports.getEmployee = async (req, res) => {
   try {
     const employee = await Employee.findById(req.params.eid);
@@ -9,6 +10,7 @@ exports.getEmployee = async (req, res) => {
   }
 };
 
+// get list of employee registered from route post /api/v1/emp/employees
 exports.listEmployee = async (req, res) => {
   try {
     const employees = await Employee.find({});
@@ -18,6 +20,7 @@ exports.listEmployee = async (req, res) => {
   }
 };
 
+// update specified employee from route put /api/v1/emp/employees/:eid
 exports.updateEmployee = async (req, res) => {
   try {
     let result = await Employee.findByIdAndUpdate(req.params.eid, req.body)
@@ -27,6 +30,7 @@ exports.updateEmployee = async (req, res) => {
   }
 };
 
+// create specified employee from route post /api/v1/emp/employees
 exports.createEmployee = async (req, res) => {
   try {
     let result = await Employee.create(req.body)
@@ -36,6 +40,7 @@ exports.createEmployee = async (req, res) => {
   }
 };
 
+// delete specified employee from route put /api/v1/emp/employees?eid=number
 exports.deleteEmployee = async (req, res) => {
   try {
     await Employee.findByIdAndDelete(req.query.eid)

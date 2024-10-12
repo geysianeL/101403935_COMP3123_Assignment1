@@ -2,6 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+// register a user from route post /api/v1/user/signup
 exports.signUp = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -19,6 +20,8 @@ exports.signUp = async (req, res) => {
   }
 };
 
+// login with a user from route post /api/v1/user/login
+// it returns a jwt which must be used on all employee routes
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
