@@ -8,6 +8,6 @@ router.get('/v1/emp/employees', authenticateToken, employeeController.listEmploy
 router.get('/v1/emp/employees/:eid', authenticateToken, employeeController.getEmployee);
 router.post('/v1/emp/employees', authenticateToken, employeeController.createEmployee);
 router.put('/v1/emp/employees/:eid', authenticateToken, employeeController.updateEmployee);
-router.delete('/v1/emp/employees', authenticateToken, employeeController.updateEmployee);
+router.delete('/v1/emp/employees', authenticateToken, employeeController.deleteEmployee);
 
 module.exports = router;

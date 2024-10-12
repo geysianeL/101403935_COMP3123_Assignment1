@@ -38,8 +38,8 @@ exports.createEmployee = async (req, res) => {
 
 exports.deleteEmployee = async (req, res) => {
   try {
-    Employee.findByIdAndDelete(req.params.eid)
-    res.status(200).send(req.body);
+    await Employee.findByIdAndDelete(req.query.eid)
+    res.status(200).send("Employee deleted successfully");
   } catch (err) {
     res.status(400).send(err.message);
   }
