@@ -7,6 +7,84 @@
 	},
 	"item": [
 		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "create_user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"geysianel\",\r\n    \"email\": \"geysianelopes@hotmail.com\",\r\n    \"password\": \"p4WZwbT6KzjasevS9rDmuF\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/v1/user/signup",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"jwt\", jsonData.token);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"geysianelopes@hotmail.com\",\r\n    \"password\": \"p4WZwbT6KzjasevS9rDmuF\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/v1/user/login",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Employees",
 			"item": [
 				{
@@ -35,11 +113,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{server}}/v1/emp/employees/:eid",
+							"raw": "{{server}}/api/v1/emp/employees/:eid",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
+								"api",
 								"v1",
 								"emp",
 								"employees",
@@ -48,7 +127,7 @@
 							"variable": [
 								{
 									"key": "eid",
-									"value": ""
+									"value": "{{lastEmployeeId}}"
 								}
 							]
 						}
@@ -57,15 +136,40 @@
 				},
 				{
 					"name": "create_employee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"lastEmployeeId\", jsonData._id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"first_name\": \"gey\",\r\n \"last_name\": \"lopes\",\r\n \"email\": \"geylo@hotmail.com\",\r\n \"position\": \"developer\",\r\n \"salary\": 100000,\r\n \"date_of_joining\": \"2024-01-01\",\r\n \"department\": \"IT\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{server}}/v1/emp/employees",
+							"raw": "{{server}}/api/v1/emp/employees",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
+								"api",
 								"v1",
 								"emp",
 								"employees"
@@ -80,11 +184,12 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{server}}/v1/emp/employees/:eid",
+							"raw": "{{server}}/api/v1/emp/employees/:eid",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
+								"api",
 								"v1",
 								"emp",
 								"employees",
@@ -106,57 +211,77 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{server}}/v1/emp/employees",
+							"raw": "{{server}}/api/v1/emp/employees?eid={{lastEmployeeId}}",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
+								"api",
 								"v1",
 								"emp",
 								"employees"
+							],
+							"query": [
+								{
+									"key": "eid",
+									"value": "{{lastEmployeeId}}"
+								}
 							]
 						}
 					},
 					"response": []
 				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{jwt}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
 			]
 		},
 		{
-			"name": "Users",
+			"name": "health",
 			"item": [
 				{
-					"name": "create_user",
+					"name": "ping",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{server}}/v1/user/signup",
+							"raw": "{{server}}/api/v1/ping",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
+								"api",
 								"v1",
-								"user",
-								"signup"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "login",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{server}}/v1/user/login",
-							"host": [
-								"{{server}}"
-							],
-							"path": [
-								"v1",
-								"user",
-								"login"
+								"ping"
 							]
 						}
 					},
@@ -192,6 +317,14 @@
 			"key": "server",
 			"value": "http://localhost:3000",
 			"type": "string"
+		},
+		{
+			"key": "jwt",
+			"value": ""
+		},
+		{
+			"key": "lastEmployeeId",
+			"value": ""
 		}
 	]
 }
