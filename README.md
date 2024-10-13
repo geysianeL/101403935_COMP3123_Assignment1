@@ -29,6 +29,31 @@ on linux:
 docker compose up
 ```
 
+## How to run for Development
+
+In terminal, navigate to the folder `src`
+
+```
+cd src
+```
+
+then, run the `docker compose up -d mongo` command for running just mongo db service
+
+on windows/mac:
+```
+docker-compose up -d mongo
+```
+
+on linux:
+```
+docker compose up -d mongo
+```
+
+and then, run the the app as dev mode with nodemon
+
+```
+npm run dev
+```
 ## Important URLs
 
 - node project - http://localhost:3000
