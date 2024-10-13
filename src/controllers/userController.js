@@ -1,10 +1,17 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { validationResult } = require('express-validator');
 
 // register a user from route post /api/v1/user/signup
 exports.signUp = async (req, res) => {
   try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ status: false, message: errors.array() });
+    }
+
     const { username, email, password } = req.body;
     const newUser = new User({ username, email, password });
     await newUser.save();
@@ -24,6 +31,12 @@ exports.signUp = async (req, res) => {
 // it returns a jwt which must be used on all employee routes
 exports.login = async (req, res) => {
   try {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ status: false, message: errors.array() });
+    }
+
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) 
