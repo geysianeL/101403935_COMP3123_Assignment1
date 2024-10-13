@@ -48,8 +48,13 @@ on linux:
 ```
 docker compose up -d mongo
 ```
+and then, install all packages from npm
 
-and then, run the the app as dev mode with nodemon
+```
+npm install
+```
+
+Finally, run the the app as dev mode with nodemon
 
 ```
 npm run dev
