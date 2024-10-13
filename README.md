@@ -9,7 +9,6 @@ Student Name: Geysiane Lopes Bezerra
 - Docker
 - Docker Compose
 
-
 ## How to run
  
 In terminal, navigate to the folder `src`
@@ -29,6 +28,13 @@ on linux:
 ```
 docker compose up
 ```
+
+## Important URLs
+
+- node project - http://localhost:3000
+- mongo-express - http://localhost:8081
+  - credentials: admin:pass
+
 
 ## sample data
 
